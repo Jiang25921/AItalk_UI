@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>声途 AI口语 - UI 设计预览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+        }
+
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+        }
+
+        .screen-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .screen-header {
+            background: #1a1a2e;
+            color: white;
+            padding: 12px 16px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .screen-header::before {
+            content: '● ● ●';
+            color: #ff5f56;
+            letter-spacing: 4px;
+        }
+
+        .screen-title {
+            margin-left: auto;
+            font-weight: 500;
+        }
+
+        .screen-content {
+            height: 600px;
+            overflow-y: auto;
+            background: #f8fafc;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .nav-brand-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #1a92eb, #3b82f6);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-links a.active {
+            color: #1a92eb;
+        }
+
+        .nav-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #1a92eb, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* 首页样式 */
+        .welcome-section {
+            background: linear-gradient(135deg, #1a92eb 0%, #3b82f6 100%);
+            color: white;
+            padding: 24px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-text h2 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .welcome-text p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .streak-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .stat-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .section-title {
+            padding: 0 20px;
+            margin: 20px 0 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-start {
+            margin: 0 20px;
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .quick-start-icon {
+            width: 48px;
+            height: 48px;
+            background: #fef3c7;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .quick-start-info {
+            flex: 1;
+        }
+
+        .quick-start-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .quick-start-meta {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .quick-start-btn {
+            background: #1a92eb;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 0 20px 20px;
+        }
+
+        .scenario-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: transform 0.2s;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .scenario-icon {
+            width: 48px;
+            height: 48px;
+            background: #e8f4fd;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin: 0 auto 12px;
+        }
+
+        .scenario-title {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .scenario-desc {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 12px;
+        }
+
+        .scenario-btn {
+            background: #e8f4fd;
+            color: #1a92eb;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* 练习页面 */
+        .practice-header {
+            background: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .practice-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .back-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .chat-container {
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .message.ai .message-avatar {
+            background: linear-gradient(135deg, #1a92eb, #3b82f6);
+            color: white;
+        }
+
+        .message.user .message-avatar {
+            background: #dbeafe;
+            color: #1a92eb;
+            font-weight: 600;
+        }
+
+        .message-content {
+            max-width: 70%;
+        }
+
+        .message-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .message.user .message-label {
+            text-align: right;
+        }
+
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.ai .message-bubble {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #1a92eb, #3b82f6);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .input-section {
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+        }
+
+        .input-modes {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .mode-btn {
+            padding: 8px 20px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .mode-btn.active {
+            background: #e8f4fd;
+            border-color: #1a92eb;
+            color: #1a92eb;
+        }
+
+        .voice-button {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a92eb, #3b82f6);
+            border: none;
+            color: white;
+            font-size: 28px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(26,146,235,0.4);
+        }
+
+        /* 结果页面 */
+        .result-header {
+            background: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .score-section {
+            background: linear-gradient(135deg, #1a92eb 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .score-title {
+            font-size: 18px;
+            margin-bottom: 24px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            margin: 0 auto 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid rgba(255,255,255,0.3);
+        }
+
+        .score-value {
+            font-size: 48px;
+            font-weight: 700;
+        }
+
+        .score-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .score-details {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-item-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .score-item-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .analysis-section {
+            padding: 20px;
+        }
+
+        .analysis-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .analysis-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-item {
+            margin-bottom: 16px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .progress-label {
+            color: #475569;
+        }
+
+        .progress-value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-fill.excellent { background: #10b981; }
+        .progress-fill.good { background: #3b82f6; }
+        .progress-fill.average { background: #f59e0b; }
+
+        .suggestion-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-icon {
+            font-size: 16px;
+        }
+
+        .suggestion-text {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            padding: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #1a92eb, #3b82f6);
+            color: white;
+        }
+
+        .action-btn.secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        /* 登录页面 */
+        .login-container {
+            min-height: 600px;
+            background: linear-gradient(135deg, #e8f4fd 0%, #ffffff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #1a92eb, #3b82f6);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: white;
+            font-size: 28px;
+        }
+
+        .login-logo h2 {
+            color: #1e293b;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .login-logo p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1a92eb;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #475569;
+        }
+
+        .forgot-link {
+            color: #1a92eb;
+            text-decoration: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1a92eb, #3b82f6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 24px;
+        }
+
+        .divider {
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 16px;
+            position: relative;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .register-link {
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .register-link a {
+            color: #1a92eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* 设置页面 */
+        .settings-list {
+            padding: 20px;
+        }
+
+        .settings-group {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .settings-group-title {
+            padding: 16px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #64748b;
+            background: #f8fafc;
+        }
+
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-icon {
+            width: 36px;
+            height: 36px;
+            background: #e8f4fd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .settings-info h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+
+        .settings-info p {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .settings-arrow {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .toggle-switch {
+            width: 48px;
+            height: 26px;
+            background: #e2e8f0;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toggle-switch.active {
+            background: #1a92eb;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(22px);
+        }
+
+        .theme-options {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+        }
+
+        .theme-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .theme-option.light {
+            background: #ffffff;
+            border-color: #e2e8f0;
+        }
+
+        .theme-option.dark {
+            background: #1e293b;
+        }
+
+        .theme-option.blue {
+            background: #dbeafe;
+        }
+
+        .theme-option.green {
+            background: #d1fae5;
+        }
+
+        .theme-option.active {
+            border-color: #1a92eb;
+            box-shadow: 0 0 0 3px rgba(26,146,235,0.2);
+        }
+
+        .danger-btn {
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 16px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* 历史记录 */
+        .filter-bar {
+            background: white;
+            padding: 16px 20px;
+            display: flex;
+            gap: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .filter-input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .filter-select {
+            padding: 10px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            color: #475569;
+        }
+
+        .record-list {
+            padding: 20px;
+        }
+
+        .record-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .record-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .record-title-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .record-icon {
+            width: 44px;
+            height: 44px;
+            background: #fef3c7;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .record-title-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .record-type {
+            font-size: 12px;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .record-time {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .record-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .record-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .record-stat.score {
+            color: #1a92eb;
+            font-weight: 600;
+        }
+
+        .record-scores {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .record-score-item {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .record-score-item span {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .record-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .record-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+        }
+
+        .record-btn.primary {
+            background: #e8f4fd;
+            color: #1a92eb;
+        }
+
+        .record-btn.secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .record-btn.danger {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        /* 滚动条样式 */
+        .screen-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .screen-content::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .screen-content::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .screens-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .scenarios-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 声途 AI口语 - UI 设计预览</h1>
+        <p class="subtitle">完整的界面设计效果图展示</p>
+
+        <div class="screens-grid">
+            <!-- 登录页 -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">登录页 (Login)</span>
+                </div>
+                <div class="screen-content">
+                    <div class="login-container">
+                        <div class="login-card">
+                            <div class="login-logo">
+                                <div class="login-logo-icon">🎵</div>
+                                <h2>声途 AI口语</h2>
+                                <p>智能口语陪练，让英语更流利</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">用户名/邮箱</label>
+                                <input type="text" class="form-input" placeholder="请输入用户名或邮箱" value="xiaoming@example.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">密码</label>
+                                <input type="password" class="form-input" placeholder="请输入密码" value="********">
+                            </div>
+                            
+                            <div class="form-options">
+                                <label class="checkbox">
+                                    <input type="checkbox" checked> 记住我
+                                </label>
+                                <a href="#" class="forgot-link">忘记密码?</a>
+                            </div>
+                            
+                            <button class="submit-btn">登 录</button>
+                            
+                            <div class="divider">
+                                <span>或使用以下方式登录</span>
+                            </div>
+                            
+                            <div class="social-login">
+                                <button class="social-btn">💬</button>
+                                <button class="social-btn">📱</button>
+                                <button class="social-btn">🔴</button>
+                            </div>
+                            
+                            <div class="register-link">
+                                还没有账户？ <a href="#">立即注册</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 首页 -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">首页 (Home)</span>
+                </div>
+                <div class="screen-content">
+                    <div class="navbar">
+                        <div class="nav-brand">
+                            <div class="nav-brand-icon">🎵</div>
+                            <span>声途 AI口语</span>
+                        </div>
+                        <div class="nav-links">
+                            <a href="#" class="active">首页</a>
+                            <a href="#">场景</a>
+                            <a href="#">记录</a>
+                            <a href="#">语法</a>
+                        </div>
+                        <div class="nav-avatar">明</div>
+                    </div>
+
+                    <div class="welcome-section">
+                        <div class="welcome-text">
+                            <h2>👋 欢迎回来，小明！</h2>
+                            <p>今天也要坚持练习哦~</p>
+                        </div>
+                        <div class="streak-badge">
+                            🔥 连续打卡 7 天
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📚</div>
+                            <div class="stat-value">15</div>
+                            <div class="stat-label">已完成场景</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-value">120</div>
+                            <div class="stat-label">练习分钟</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-value">85.5</div>
+                            <div class="stat-label">平均得分</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">已掌握语法</div>
+                        </div>
+                    </div>
+
+                    <div class="section-title">⚡ 快速开始</div>
+                    <div class="quick-start">
+                        <div class="quick-start-icon">🍽️</div>
+                        <div class="quick-start-info">
+                            <div class="quick-start-title">餐厅点餐</div>
+                            <div class="quick-start-meta">上次练习：昨天 · 进度：60%</div>
+                        </div>
+                        <button class="quick-start-btn">继续练习 →</button>
+                    </div>
+
+                    <div class="section-title">📚 推荐场景</div>
+                    <div class="scenarios-grid">
+                        <div class="scenario-card">
+                            <div class="scenario-icon">🍽️</div>
+                            <div class="scenario-title">餐厅点餐</div>
+                            <div class="scenario-desc">日常饮食</div>
+                            <button class="scenario-btn">开始练习</button>
+                        </div>
+                        <div class="scenario-card">
+                            <div class="scenario-icon">🏨</div>
+                            <div class="scenario-title">酒店入住</div>
+                            <div class="scenario-desc">旅行住宿</div>
+                            <button class="scenario-btn">开始练习</button>
+                        </div>
+                        <div class="scenario-card">
+                            <div class="scenario-icon">✈️</div>
+                            <div class="scenario-title">机场登机</div>
+                            <div class="scenario-desc">出行服务</div>
+                            <button class="scenario-btn">开始练习</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 练习页面 -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">练习页面 (Practice)</span>
+                </div>
+                <div class="screen-content">
+                    <div class="practice-header">
+                        <div class="practice-title">
+                            <button class="back-btn">←</button>
+                            <span>🍽️ 餐厅点餐</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="back-btn">⚙️</button>
+                            <button class="back-btn">❌</button>
+                        </div>
+                    </div>
+
+                    <div class="chat-container">
+                        <div class="message ai">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <div class="message-label">AI 助教</div>
+                                <div class="message-bubble">
+                                    Welcome to our restaurant! 🍽️<br>
+                                    What would you like to order today?
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="message user">
+                            <div class="message-avatar">明</div>
+                            <div class="message-content">
+                                <div class="message-label">我</div>
+                                <div class="message-bubble">
+                                    I'd like a pizza, please.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="message ai">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <div class="message-label">AI 助教</div>
+                                <div class="message-bubble">
+                                    Great choice! 🍕<br>
+                                    We have pepperoni, margherita, and vegetarian options. Which one would you prefer?
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-section">
+                        <div class="input-modes">
+                            <button class="mode-btn active">🎙️ 语音</button>
+                            <button class="mode-btn">⌨️ 键盘</button>
+                            <button class="mode-btn">💡 提示</button>
+                        </div>
+                        <div style="display: flex; justify-content: center;">
+                            <button class="voice-button">🎤</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 练习结果页 -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">练习结果 (Result)</span>
+                </div>
+                <div class="screen-content">
+                    <div class="result-header">
+                        <div class="practice-title">
+                            <button class="back-btn">←</button>
+                            <span>练习结果</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="back-btn">🏠</button>
+                            <button class="back-btn">分享</button>
+                        </div>
+                    </div>
+
+                    <div class="score-section">
+                        <div class="score-title">🎉 练习完成！</div>
+                        <div class="score-circle">
+                            <div class="score-value">85.5</div>
+                            <div class="score-label">综合得分</div>
+                        </div>
+                        <div class="score-details">
+                            <div class="score-item">
+                                <div class="score-item-value">85</div>
+                                <div class="score-item-label">发音</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-item-value">90</div>
+                                <div class="score-item-label">语法</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-item-value">82</div>
+                                <div class="score-item-label">流利度</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <div class="analysis-card">
+                            <div class="analysis-card-title">📊 详细分析</div>
+                            
+                            <div class="progress-item">
+                                <div class="progress-header">
+                                    <span class="progress-label">发音准确度</span>
+                                    <span class="progress-value">85分 良好</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill good" style="width: 85%"></div>
+                                </div>
+                            </div>
+
+                            <div class="progress-item">
+                                <div class="progress-header">
+                                    <span class="progress-label">语法正确性</span>
+                                    <span class="progress-value">90分 优秀</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill excellent" style="width: 90%"></div>
+                                </div>
+                            </div>
+
+                            <div class="progress-item">
+                                <div class="progress-header">
+                                    <span class="progress-label">流利度</span>
+                                    <span class="progress-value">82分 良好</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill good" style="width: 82%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-card">
+                            <div class="analysis-card-title">💡 改进建议</div>
+                            <div class="suggestion-item">
+                                <span class="suggestion-icon">✅</span>
+                                <span class="suggestion-text">发音清晰，语调自然</span>
+                            </div>
+                            <div class="suggestion-item">
+                                <span class="suggestion-icon">⚠️</span>
+                                <span class="suggestion-text">注意 "th" 的发音，舌尖要轻触上齿</span>
+                            </div>
+                            <div class="suggestion-item">
+                                <span class="suggestion-icon">💪</span>
+                                <span class="suggestion-text">可以尝试使用更多连接词，如 "however", "therefore"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn secondary">再练一次</button>
+                        <button class="action-btn primary">返回首页</button>
+                        <button class="action-btn secondary">查看记录</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 历史记录页 -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">历史记录 (History)</span>
+                </div>
+                <div class="screen-content">
+                    <div class="navbar">
+                        <div class="nav-brand">
+                            <div class="nav-brand-icon">🎵</div>
+                            <span>声途 AI口语</span>
+                        </div>
+                        <div class="nav-links">
+                            <a href="#">首页</a>
+                            <a href="#">场景</a>
+                            <a href="#" class="active">记录</a>
+                            <a href="#">语法</a>
+                        </div>
+                        <div class="nav-avatar">明</div>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="text" class="filter-input" placeholder="🔍 搜索记录...">
+                        <select class="filter-select">
+                            <option>全部类型</option>
+                        </select>
+                        <select class="filter-select">
+                            <option>最近7天</option>
+                        </select>
+                    </div>
+
+                    <div class="record-list">
+                        <div class="record-card">
+                            <div class="record-header">
+                                <div class="record-title-section">
+                                    <div class="record-icon">🍽️</div>
+                                    <div class="record-title-info">
+                                        <h3>餐厅点餐</h3>
+                                        <span class="record-type">场景练习</span>
+                                    </div>
+                                </div>
+                                <div class="record-time">昨天 14:30</div>
+                            </div>
+                            <div class="record-stats">
+                                <div class="record-stat score">📊 综合得分: 85.5分</div>
+                                <div class="record-stat">🕐 5分钟</div>
+                                <div class="record-stat">💬 8轮对话</div>
+                            </div>
+                            <div class="record-scores">
+                                <div class="record-score-item">发音: <span>85</span></div>
+                                <div class="record-score-item">语法: <span>90</span></div>
+                                <div class="record-score-item">流利度: <span>82</span></div>
+                            </div>
+                            <div class="record-actions">
+                                <button class="record-btn primary">查看详情</button>
+                                <button class="record-btn secondary">再次练习</button>
+                                <button class="record-btn danger">删除</button>
+                            </div>
+                        </div>
+
+                        <div class="record-card">
+                            <div class="record-header">
+                                <div class="record-title-section">
+                                    <div class="record-icon" style="background: #dbeafe;">📖</div>
+                                    <div class="record-title-info">
+                                        <h3>一般现在时</h3>
+                                        <span class="record-type">语法课程</span>
+                                    </div>
+                                </div>
+                                <div class="record-time">前天 10:15</div>
+                            </div>
+                            <div class="record-stats">
+                                <div class="record-stat score">📊 学习进度: 100%</div>
+                                <div class="record-stat">🕐 15分钟</div>
+                                <div class="record-stat">⭐ 已完成</div>
+                            </div>
+                            <div class="record-actions">
+                                <button class="record-btn primary">查看详情</button>
+                                <button class="record-btn secondary">复习</button>
+                                <button class="record-btn danger">删除</button>
+                            </div>
+                        </div>
+
+                        <div class="record-card">
+                            <div class="record-header">
+                                <div class="record-title-section">
+                                    <div class="record-icon" style="background: #fce7f3;">🏨</div>
+                                    <div class="record-title-info">
+                                        <h3>酒店入住</h3>
+                                        <span class="record-type">场景练习</span>
+                                    </div>
+                                </div>
+                                <div class="record-time">2024-01-10</div>
+                            </div>
+                            <div class="record-stats">
+                                <div class="record-stat score">📊 综合得分: 78分</div>
+                                <div class="record-stat">🕐 3分钟</div>
+                                <div class="record-stat">💬 5轮对话</div>
+                            </div>
+                            <div class="record-scores">
+                                <div class="record-score-item">发音: <span>80</span></div>
+                                <div class="record-score-item">语法: <span>75</span></div>
+                                <div class="record-score-item">流利度: <span>79</span></div>
+                            </div>
+                            <div class="record-actions">
+                                <button class="record-btn primary">查看详情</button>
+                                <button class="record-btn secondary">再次练习</button>
+                                <button class="record-btn danger">删除</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设置页 -->
+            <div class="screen-card">
+                <div class="screen-header">
+                    <span class="screen-title">设置页 (Settings)</span>
+                </div>
+                <div class="screen-content">
+                    <div class="navbar">
+                        <div class="nav-brand">
+                            <div class="nav-brand-icon">🎵</div>
+                            <span>声途 AI口语</span>
+                        </div>
+                        <div class="nav-links">
+                            <a href="#">首页</a>
+                            <a href="#">场景</a>
+                            <a href="#">记录</a>
+                            <a href="#">语法</a>
+                        </div>
+                        <div class="nav-avatar">明</div>
+                    </div>
+
+                    <div class="settings-list">
+                        <div class="settings-group">
+                            <div class="settings-group-title">👤 账户信息</div>
+                            <div class="settings-item">
+                                <div class="settings-item-left">
+                                    <div style="position: relative; cursor: pointer;">
+                                        <div class="nav-avatar" style="width: 56px; height: 56px; font-size: 20px;">明</div>
+                                        <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 20px; background: rgba(0,0,0,0.6); color: white; font-size: 10px; display: flex; align-items: center; justify-content: center; border-bottom-left-radius: 50%; border-bottom-right-radius: 50%;">修改</div>
+                                    </div>
+                                    <div class="settings-info">
+                                        <h4>小明 <span style="font-size: 12px; color: #1a92eb; cursor: pointer;">✏️</span></h4>
+                                        <p>用户账号: xiaoming</p>
+                                        <p style="font-size: 11px; color: #94a3b8;">xiaoming@example.com</p>
+                                    </div>
+                                </div>
+                                <span class="settings-arrow">→</span>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">🎨 主题设置</div>
+                            <div class="theme-options">
+                                <div class="theme-option light active">☀️</div>
+                                <div class="theme-option dark">🌙</div>
+                                <div class="theme-option blue">🔵</div>
+                                <div class="theme-option green">🟢</div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-left">
+                                    <div class="settings-icon">📝</div>
+                                    <div class="settings-info">
+                                        <h4>字体大小</h4>
+                                    </div>
+                                </div>
+                                <span class="settings-arrow">标准 →</span>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">🔊 语音设置</div>
+                            <div class="settings-item">
+                                <div class="settings-item-left">
+                                    <div class="settings-icon">🔊</div>
+                                    <div class="settings-info">
+                                        <h4>AI 语音播报</h4>
+                                        <p>练习时自动播放 AI 回复</p>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-left">
+                                    <div class="settings-icon">🗣️</div>
+                                    <div class="settings-info">
+                                        <h4>播报语速</h4>
+                                    </div>
+                                </div>
+                                <span class="settings-arrow">正常 →</span>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">🔔 通知设置</div>
+                            <div class="settings-item">
+                                <div class="settings-item-left">
+                                    <div class="settings-icon">⏰</div>
+                                    <div class="settings-info">
+                                        <h4>练习提醒</h4>
+                                        <p>每日提醒坚持练习</p>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch active"></div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-left">
+                                    <div class="settings-icon">🎯</div>
+                                    <div class="settings-info">
+                                        <h4>每日目标达成</h4>
+                                    </div>
+                                </div>
+                                <div class="toggle-switch"></div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="settings-group-title">🔐 账户安全</div>
+                            <div class="settings-item">
+                                <div class="settings-item-left">
+                                    <div class="settings-icon">🔒</div>
+                                    <div class="settings-info">
+                                        <h4>修改密码</h4>
+                                    </div>
+                                </div>
+                                <span class="settings-arrow">→</span>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-left">
+                                    <div class="settings-icon">📱</div>
+                                    <div class="settings-info">
+                                        <h4>绑定手机</h4>
+                                    </div>
+                                </div>
+                                <span class="settings-arrow">去绑定 →</span>
+                            </div>
+                        </div>
+
+                        <div class="settings-group" style="margin-top: 24px;">
+                            <div class="danger-btn">🔄 切换用户</div>
+                        </div>
+
+                        <div class="settings-group">
+                            <div class="danger-btn" style="color: #dc2626;">🚪 退出登录</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; color: rgba(255,255,255,0.8);">
+            <p>声途 AI口语陪练系统 · UI 设计预览</p>
+            <p style="font-size: 14px; margin-top: 8px;">© 2024 声途 AI口语 保留所有权利</p>
+        </div>
+    </div>
+</body>
+</html>
